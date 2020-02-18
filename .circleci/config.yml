@@ -8,7 +8,7 @@ jobs:
       - checkout
       - aws-cli/setup:
           profile-name: example
-      - run: echo "Run your code here"
+      - run: echo "aws cli setup is done"
 workflows:
   version: 2
   aws-cli:
