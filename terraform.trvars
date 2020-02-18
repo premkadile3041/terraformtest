@@ -1,4 +1,5 @@
 #terraform.tfvars
+#ADDED files
 aws_access_key_id="AKIAWBLIMRLMRUEQI6TX"
 aws_secret_access_key="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"
 vpc_region="us-east-1"
