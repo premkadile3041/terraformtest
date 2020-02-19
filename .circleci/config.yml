@@ -9,9 +9,19 @@ jobs:
       - aws-cli/setup:
           profile-name: example
       - run: echo "aws cli setup is done"
+  aws-cli-PROD:
+    executor: aws-cli/default
+    steps:
+      - checkout
+      - aws-cli/setup:
+          profile-name: example
+      - run: echo "aws cli setUP IN PROD"    
 workflows:
   version: 2
   aws-cli:
     jobs:
       - aws-cli-example:
           context: aws
+      - aws-cli-PROD:
+          context: production
+        
