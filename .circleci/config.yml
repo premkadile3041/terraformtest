@@ -2,6 +2,29 @@ version: 2.1
 orbs:
   aws-cli: circleci/aws-cli@0.1.20
 references: 
+setup_terraform: &setup_terraform
+  run:
+    name: Setup Terraform
+    command: |
+      curl -O https://releases.hashicorp.com/terraform/${TERRAFORM_VERSION}/terraform_${TERRAFORM_VERSION}_linux_amd64.zip
+      curl -O https://releases.hashicorp.com/terraform/${TERRAFORM_VERSION}/terraform_${TERRAFORM_VERSION}_SHA256SUMS
+      terraform_sha256_sum=$(cat terraform_${TERRAFORM_VERSION}_SHA256SUMS | grep linux_amd64)
+      echo $terraform_sha256_sum
+      terraform_sha256_sum_calculated=$(sha256sum terraform_${TERRAFORM_VERSION}_linux_amd64.zip)
+      echo $terraform_sha256_sum_calculated
+      echo "Checking Terraform checksums ..."
+      grep $terraform_sha256_sum_calculated terraform_${TERRAFORM_VERSION}_SHA256SUMS
+      unzip terraform_${TERRAFORM_VERSION}_linux_amd64.zip -d terraform
+      echo 'export PATH=$CIRCLE_WORKING_DIRECTORY/terraform:$PATH' >> $BASH_ENV
+terraform_init: &terraform_init
+  run:
+    name: terraform init
+    command: |
+      source $BASH_ENV
+      cd environments/<< parameters.TERRAFORM_ENVIRONMENT >>
+      terraform init    
+
+
 aws-cli-example: &aws-cli-example
   executor: aws-cli/default
   steps:
@@ -24,15 +47,8 @@ jobs:
     steps:
       - checkout
       - *setup_terraform
-      - restore_cache:
-          key: v1-{{ checksum "requirements.txt" }}
       - *aws-cli-example
-      - save_cache:
-          key: v1-{{ checksum "requirements.txt" }}
-          paths:
-          - venv
       - *terraform_init
-      - *terraform_plan
 
 
 workflows:
