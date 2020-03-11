@@ -58,9 +58,6 @@ jobs:
   terraform_plan:
     docker:
       - image: circleci/python:3.6.1
-    environment:
-      AWS_DEFAULT_OUTPUT: json
-      TERRAFORM_VERSION: 0.12.10
     steps:
       - checkout
       - *aws-cli-example
