@@ -89,6 +89,7 @@ jobs:
       - checkout
       - *setup_terraform
       - *aws-cli-example
+           context: aws
       - *terraform_init        
 workflows:
   version: 2.1
