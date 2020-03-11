@@ -76,10 +76,6 @@ terraform_init: &terraform_init
       
 jobs:
   terraform_plan:
-    parameters:
-      TERRAFORM_ENVIRONMENT:
-        type: env_var_name
-        default: sandbox
     docker:
       - image: circleci/python:3.6.1
     environment:
@@ -87,9 +83,7 @@ jobs:
       TERRAFORM_VERSION: 0.12.10
     steps:
       - checkout
-      - *setup_terraform
-      - *aws-cli-example
-      - *terraform_init        
+      - *aws-cli-example     
 workflows:
   version: 2.1
   aws-cli:
