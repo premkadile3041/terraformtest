@@ -6,15 +6,15 @@ setup_terraform: &setup_terraform
     run:
       name: Setup Terraform
       command: |
-        curl -O https://releases.hashicorp.com/terraform/${TERRAFORM_VERSION}/terraform_${TERRAFORM_VERSION}_linux_amd64.zip
-        curl -O https://releases.hashicorp.com/terraform/${TERRAFORM_VERSION}/terraform_${TERRAFORM_VERSION}_SHA256SUMS
-        terraform_sha256_sum=$(cat terraform_${TERRAFORM_VERSION}_SHA256SUMS | grep linux_amd64)
+        curl -O https://releases.hashicorp.com/terraform/0.12.10/terraform_0.12.10_linux_amd64.zip
+        curl -O https://releases.hashicorp.com/terraform/0.12.10/terraform_0.12.10_SHA256SUMS
+        terraform_sha256_sum=$(cat terraform_0.12.10_SHA256SUMS | grep linux_amd64)
         echo $terraform_sha256_sum
-        terraform_sha256_sum_calculated=$(sha256sum terraform_${TERRAFORM_VERSION}_linux_amd64.zip)
+        terraform_sha256_sum_calculated=$(sha256sum terraform_0.12.10_linux_amd64.zip)
         echo $terraform_sha256_sum_calculated
         echo "Checking Terraform checksums ..."
-        grep $terraform_sha256_sum_calculated terraform_${TERRAFORM_VERSION}_SHA256SUMS
-        unzip terraform_${TERRAFORM_VERSION}_linux_amd64.zip -d terraform
+        grep $terraform_sha256_sum_calculated terraform_0.12.10_SHA256SUMS
+        unzip terraform_0.12.10_linux_amd64.zip -d terraform
         echo 'export PATH=$CIRCLE_WORKING_DIRECTORY/terraform:$PATH' >> $BASH_ENV
 aws-cli-example: &aws-cli-example
     - run:
@@ -89,7 +89,6 @@ jobs:
       - checkout
       - *setup_terraform
       - *aws-cli-example
-           context: aws
       - *terraform_init        
 workflows:
   version: 2.1
