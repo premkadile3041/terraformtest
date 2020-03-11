@@ -1,4 +1,4 @@
-version: 2
+version: 2.1
 
 references:
 
@@ -91,7 +91,7 @@ jobs:
       - *aws-cli-example
       - *terraform_init        
 workflows:
-  version: 2
+  version: 2.1
   aws-cli:
     jobs:
     - terraform_plan:
