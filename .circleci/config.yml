@@ -5,7 +5,6 @@ jobs:
   scan_images:
     executor: clair_scanner/default
     steps:
-    - clair_scanner/scan:
         image: debian:stretch
 workflows:
   test:
