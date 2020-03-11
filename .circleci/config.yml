@@ -8,13 +8,36 @@ aws-cli-example: &aws-cli-example
     - checkout
     - aws-cli/setup:
         profile-name: example
-    - run: echo "aws cli setup is done"  
+    - run: echo "aws cli setup is done"
+
+jobs:
+  terraform_plan:
+    parameters:
+      TERRAFORM_ENVIRONMENT:
+        type: env_var_name
+        default: sandbox
+    docker:
+      - image: circleci/python:3.6.1
+    environment:
+      AWS_DEFAULT_OUTPUT: json
+      TERRAFORM_VERSION: 0.12.10
+    steps:
+      - checkout
+      - *setup_terraform
+      - restore_cache:
+          key: v1-{{ checksum "requirements.txt" }}
+      - *setup_awscli
+      - save_cache:
+          key: v1-{{ checksum "requirements.txt" }}
+          paths:
+          - venv
+      - *terraform_init
+      - *terraform_plan
+
 workflows:
   version: 2
   aws-cli:
     jobs:
-      - aws-cli-example:
+      - terraform_plan:
           context: aws
-      - aws-cli-PROD:
-          context: production
         
