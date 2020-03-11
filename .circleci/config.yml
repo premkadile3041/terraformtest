@@ -26,13 +26,14 @@ jobs:
       - *setup_terraform
       - restore_cache:
           key: v1-{{ checksum "requirements.txt" }}
-      - *setup_awscli
+      - *aws-cli-example
       - save_cache:
           key: v1-{{ checksum "requirements.txt" }}
           paths:
           - venv
       - *terraform_init
       - *terraform_plan
+
 
 workflows:
   version: 2
