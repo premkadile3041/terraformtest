@@ -1,7 +1,6 @@
 version: 2.1
 orbs:
   clair-scanner: ovotech/clair-scanner@1.6.0
-  aws-ecr: circleci/aws-ecr@6.7.1
 jobs:
   scan_images:
     executor: clair_scanner/default
