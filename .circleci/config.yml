@@ -9,8 +9,7 @@ jobs:
     steps:
     - clair/scan:
         image: alpine/clair
-        - run: |
-            docker build -t alpine/clair .
+      
 
 workflows:
   test:
