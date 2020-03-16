@@ -10,3 +10,7 @@ jobs:
     - run: $(aws ecr get-login --no-include-email)
     - clair/scan:
         image: 221056883232.dkr.ecr.us-west-2.amazonaws.com/nginx-website:clairtestng
+workflows:
+  test:
+    jobs:
+    - scan_ecr
