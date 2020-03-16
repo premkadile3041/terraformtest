@@ -8,8 +8,8 @@ jobs:
     executor: clair/default
     steps:
     - run: |
-        docker pull nginx:latest
-        echo $(docker image inspect --format="{{index .RepoDigests 0}}" ovotech/example_image) > /image.txt
+        docker pull nginx/nginx:latest
+        echo $(docker image inspect --format="{{index .RepoDigests 0}}" nginx/nginx:latest) > /image.txt
     - clair/scan:
         image_file: /image.txt
 
