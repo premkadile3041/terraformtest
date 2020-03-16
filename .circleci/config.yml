@@ -4,19 +4,13 @@ orbs:
   clair: ovotech/clair-scanner@1
 
 jobs:
-  scan_images:
+  scan_ecr:
     executor: clair/default
     steps:
-    - checkout
-    - setup_remote_docker:
-        version: 17.11.0-ce
-    - run: |
-        docker pull nginx:latest
-        echo $(docker image inspect --format="{{index .RepoDigests 0}}" nginx:latest) > /image.txt
+    - run: $(aws ecr get-login --no-include-email)
     - clair/scan:
-        image_file: /image.txt
-
+        image: 221056883232.dkr.ecr.us-west-2.amazonaws.com/nginx-website:clairtestng
 workflows:
   test:
     jobs:
-    - scan_images
+    - scan_ecr        
