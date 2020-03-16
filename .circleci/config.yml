@@ -7,9 +7,6 @@
  
  jobs:
    scan_ecr:
-     docker:
-      - image: circleci/python:3.6.1
-     executor: aws-cli/default
      executor: clair/default
      steps:
      - run: $(aws ecr get-login --no-include-email)
