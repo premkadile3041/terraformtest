@@ -12,9 +12,8 @@ jobs:
     - checkout
     - run: |
         docker build -t alpine/clair .
-        docker push alpine/clair
     - clair/scan:
-        image: 
+        image: alpine/clair
 
 workflows:
   test:
