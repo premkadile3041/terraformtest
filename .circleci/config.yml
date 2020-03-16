@@ -1,24 +1,19 @@
 version: 2.1
 
+orbs:
+  clair: ovotech/clair-scanner@1
+
 jobs:
-build_n_push:
-    parameters:
-      AWS_DEFAULT_REGION:
-        type: string
-        default: us-east-1
-    docker:
-      - image: circleci/python:3.6.1
-        environment:
-          AWS_DEFAULT_OUTPUT: json
+  scan_images:
+    executor: clair/default
     steps:
-      - run:
-          name: Build image
-          command: |
-            docker build -t testclair .
+    - run: |
+        docker build -t clair/test .
+        echo $(docker image inspect --format="{{index .RepoDigests 0}}" ovotech/example_image) > /image.txt
+    - clair/scan:
+        image_file: /image.txt
+
 workflows:
-  build:
+  test:
     jobs:
-      - build_n_push:
-          IMAGE_TAG: sandbox
-          AWS_DEFAULT_REGION: us-east-1
-     
+    - scan_images
