@@ -8,7 +8,7 @@ jobs:
     executor: clair/default
     steps:
     - run: |
-        docker build -t clair/test .
+        docker pull nginx:latest
         echo $(docker image inspect --format="{{index .RepoDigests 0}}" ovotech/example_image) > /image.txt
     - clair/scan:
         image_file: /image.txt
