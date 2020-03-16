@@ -12,6 +12,7 @@ jobs:
     - clair/scan:
         image: 221056883232.dkr.ecr.us-west-2.amazonaws.com/nginx-website:clairtestng
 workflows:
-  clair-setup:
+  aws-clair:
     jobs:
       - scan_ecr:
+          context: aws
