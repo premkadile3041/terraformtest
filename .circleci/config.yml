@@ -15,4 +15,3 @@ workflows:
   clair-setup:
     jobs:
       - scan_ecr:
-          context: aws
