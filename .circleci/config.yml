@@ -7,8 +7,9 @@ jobs:
   scan_images:
     executor: clair/default
     steps:
+    - checkout
     - run: |
-        docker build -t alpine/clair /terraformtest/.
+        docker build -t alpine/clair .
         docker push alpine/clair
     - clair/scan:
         image: 
