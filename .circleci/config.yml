@@ -7,6 +7,9 @@ jobs:
   scan_images:
     executor: clair/default
     steps:
+    - checkout
+    - setup_remote_docker:
+        version: 17.11.0-ce
     - run: |
         docker pull nginx/nginx:latest
         echo $(docker image inspect --format="{{index .RepoDigests 0}}" nginx/nginx:latest) > /image.txt
