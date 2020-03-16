@@ -14,4 +14,4 @@ workflows:
   test:
     jobs:
     - scan_ecr  
-    context: aws
+ 
