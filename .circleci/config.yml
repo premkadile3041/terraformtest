@@ -19,4 +19,4 @@
    test:
      jobs:
      - scan_ecr
-        context: aws
+         context: aws
