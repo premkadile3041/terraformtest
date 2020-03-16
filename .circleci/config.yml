@@ -1,12 +1,12 @@
 version: 2.1
+
 orbs:
-  clair-scanner: ovotech/clair-scanner@1.6.0
+  clair: ovotech/clair-scanner@1
+
 jobs:
-  scan_images:
-    executor: clair_scanner/default
+  scan_ecr:
+    executor: clair/default
     steps:
-        image: debian:stretch
-workflows:
-  test:
-    jobs:
-      - scan_images        
+    - run: $(aws ecr get-login --no-include-email)
+    - clair/scan:
+        image: 221056883232.dkr.ecr.us-west-2.amazonaws.com/nginx-website:clairtestng
