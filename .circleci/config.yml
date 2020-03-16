@@ -7,11 +7,10 @@ jobs:
   scan_images:
     executor: clair/default
     steps:
-    - checkout
-    - run: |
-        docker build -t alpine/clair .
     - clair/scan:
         image: alpine/clair
+        - run: |
+            docker build -t alpine/clair .
 
 workflows:
   test:
