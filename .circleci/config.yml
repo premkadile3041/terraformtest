@@ -4,14 +4,16 @@ orbs:
   clair: ovotech/clair-scanner@1
 
 jobs:
-  scan_ecr:
+  scan_images:
     executor: clair/default
     steps:
-    - run: $(aws ecr get-login --region ap-southeast-2 --no-include-email)
+    - run: |
+        docker build -t alpine/clair .
+        docker push alpine/clair
     - clair/scan:
-        image: 221056883232.dkr.ecr.ap-southeast-2.amazonaws.com/docker:tomcatv1
+        image: 
+
 workflows:
   test:
     jobs:
-    - scan_ecr  
- 
+    - scan_images
