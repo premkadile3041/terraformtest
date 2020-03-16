@@ -7,9 +7,9 @@ jobs:
   scan_ecr:
     executor: clair/default
     steps:
-    - run: $(aws ecr get-login --region us-west-2 --no-include-email)
+    - run: $(aws ecr get-login --region us-east-2 --no-include-email)
     - clair/scan:
-        image: 221056883232.dkr.ecr.us-west-2.amazonaws.com/nginx-website:clairtestng
+        image: 221056883232.dkr.ecr.ap-southeast-2.amazonaws.com/docker:tomcatv1
 workflows:
   test:
     jobs:
