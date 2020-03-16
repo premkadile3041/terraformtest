@@ -3,9 +3,6 @@ version: 2.1
 jobs:
 build_n_push:
     parameters:
-      IMAGE_TAG:
-        type: string
-        default: latest
       AWS_DEFAULT_REGION:
         type: string
         default: us-east-1
