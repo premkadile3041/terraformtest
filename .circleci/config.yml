@@ -6,10 +6,10 @@ orbs:
 jobs:
   scan_images:
     executor: clair/default
-    steps:
-    - run: |
-        docker pull nginx:latest
-        echo $(docker image inspect --format="{{index .RepoDigests 0}}" nginx:latest) > /image.txt
+   - run: |
+        docker build -t ovotech/example_image .
+        docker push ovotech/example_image
+        echo $(docker image inspect --format="{{index .RepoDigests 0}}" ovotech/example_image) > /image.txt
     - clair/scan:
         image_file: /image.txt
 
