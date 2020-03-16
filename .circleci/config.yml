@@ -1,18 +1,16 @@
-version: 2.1
-
-orbs:
-  clair: ovotech/clair-scanner@1
-
-jobs:
-  scan_ecr:
-    executor: clair/default
-    steps:
-    - run
-    - run: $(aws ecr get-login --no-include-email)
-    - clair/scan:
-        image: 221056883232.dkr.ecr.us-west-2.amazonaws.com/nginx-website:clairtestng
-workflows:
-  aws-clair:
-    jobs:
-      - scan_ecr:
-          context: aws
+ version: 2.1
+ 
+ orbs:
+   clair: ovotech/clair-scanner@1
+ 
+ jobs:
+   scan_ecr:
+     executor: clair/default
+     steps:
+     - run: $(aws ecr get-login --no-include-email)
+     - clair/scan:
+         image: 221056883232.dkr.ecr.us-west-2.amazonaws.com/nginx-website:clairtestng
+ workflows:
+   test:
+     jobs:
+     - scan_ecr          
