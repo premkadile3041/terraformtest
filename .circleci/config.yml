@@ -6,8 +6,8 @@ orbs:
 jobs:
   scan_images:
     executor: clair/default
-    - setup_remote_docker:
-          docker_layer_caching: true
+   - setup_remote_docker:
+          version: 18.06.0-ce
     steps:
     - checkout
     - run: |
