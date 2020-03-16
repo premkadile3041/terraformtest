@@ -6,7 +6,8 @@ orbs:
 jobs:
   scan_images:
     executor: clair/default
-   - run: |
+    steps:
+    - run: |
         docker build -t ovotech/example_image .
         docker push ovotech/example_image
         echo $(docker image inspect --format="{{index .RepoDigests 0}}" ovotech/example_image) > /image.txt
