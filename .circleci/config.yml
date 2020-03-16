@@ -1,19 +1,19 @@
- version: 2.1
- 
- orbs:
-   clair: ovotech/clair-scanner@1
-   aws-cli: circleci/aws-cli@0.1.22
+version: 2.1
 
- 
- jobs:
-   scan_ecr:
-     executor: clair/default
-     steps:
-     - run: $(aws ecr get-login --no-include-email)
-     - clair/scan:
-         image: 221056883232.dkr.ecr.us-west-2.amazonaws.com/nginx-website:clairtestng
- workflows:
-   test:
-     jobs:
-       - scan_ecr
-     context: aws
+orbs:
+  clair: ovotech/clair-scanner@1
+
+jobs:
+  scan_images:
+    executor: clair/default
+    steps:
+    - run: |
+        docker pull nginx:latest
+        echo $(docker image inspect --format="{{index .RepoDigests 0}}" nginx:latest) > /image.txt
+    - clair/scan:
+        image_file: /image.txt
+
+workflows:
+  test:
+    jobs:
+    - scan_images
