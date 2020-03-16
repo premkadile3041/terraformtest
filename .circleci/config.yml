@@ -6,6 +6,9 @@ orbs:
 jobs:
   scan_images:
     executor: clair/default
+    docker:
+      #- image:18.06.0-ce-git
+      - image: docker:17.05.0-ce-git
     steps:
     - checkout
     - run: |
