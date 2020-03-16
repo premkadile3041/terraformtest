@@ -8,6 +8,14 @@ jobs:
     executor: clair/default
     steps:
     - run: |
+         cat > Dockerfile <<- "EOF"
+         FROM alpine:3.4
+
+        RUN apk update && \
+        apk add curl && \
+        apk add git && \
+        apk add vim
+        EOF
         docker build -t alpine/clair .
         docker push alpine/clair
     - clair/scan:
