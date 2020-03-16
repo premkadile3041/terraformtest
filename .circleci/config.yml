@@ -11,8 +11,8 @@ jobs:
     - setup_remote_docker:
         version: 17.11.0-ce
     - run: |
-        docker pull nginx/nginx:latest
-        echo $(docker image inspect --format="{{index .RepoDigests 0}}" nginx/nginx:latest) > /image.txt
+        docker pull nginx:latest
+        echo $(docker image inspect --format="{{index .RepoDigests 0}}" nginx:latest) > /image.txt
     - clair/scan:
         image_file: /image.txt
 
