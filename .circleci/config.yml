@@ -1,20 +1,21 @@
 version: 2.1
 
 orbs:
-  clair_scanner: ovotech/clair-scanner@1
+  clair: ovotech/clair-scanner@1
 
 jobs:
   scan_images:
-    executor: clair_scanner/default
+    executor: clair/default
     steps:
-      - checkout
-      -run: |
-          docker build -t clairtest .
-        
-      - clair_scanner/scan:
-          image: clairtest
+    - checkout
+    - run: |
+        docker build -t ovotech/example_image .
+        docker push ovotech/example_image
+        echo $(docker image inspect --format="{{index .RepoDigests 0}}" ovotech/example_image) > /image.txt
+    - clair/scan:
+        image_file: /image.txt
 
 workflows:
   test:
     jobs:
-      - scan_images
+    - scan_images
