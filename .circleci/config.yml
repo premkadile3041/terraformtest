@@ -94,14 +94,12 @@ jobs:
 
           if [ -n "" ]; then
               images=$(cat "")
-              for image in $images; do
-                  docker pull "$image"
+              for image in $images;
                   scan "$image"
               done
           fi
           if [ -n "alpine/clair" ]; then
               image="alpine/clair"
-              docker pull "$image"
               scan "$image"
           fi
 
