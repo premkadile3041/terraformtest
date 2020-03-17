@@ -7,12 +7,12 @@ jobs:
   scan_images:
     executor: clair_scanner/default
     steps:
-    - checkout
-    -run: |
-        docker build -t clairtest .
+      - checkout
+      -run: |
+          docker build -t clairtest .
         
-    - clair_scanner/scan:
-        image: clairtest
+      - clair_scanner/scan:
+          image: clairtest
 
 workflows:
   test:
