@@ -1,63 +1,20 @@
 version: 2.1
 
 orbs:
-    clair: ovotech/clair-scanner@1
+  clair_scanner: ovotech/clair-scanner@1
 
-jobs:    
-  
-  build_n_push:
-    parameters:
-      IMAGE_TAG:
-        type: string
-        default: latest
-      AWS_DEFAULT_REGION:
-        type: string
-        default: us-west-2
-    docker:
-      - image: circleci/python:3.6.1
-        environment:
-          AWS_DEFAULT_OUTPUT: json
-    executor: clair/default
-
+jobs:
+  scan_images:
+    executor: clair_scanner/default
     steps:
-      - checkout
-      - setup_remote_docker:
-      - run:
-          name: Build infos
-          command: |
-            echo "Build from commit..."
-            git rev-parse HEAD
-      - run:
-          name: Build image
-          command: |
-            docker build -t ${IMAGE_REPO_NAME}:<< parameters.IMAGE_TAG >> .
-      - run:
-          name: Tag image
-          command: |
-            docker tag ${IMAGE_REPO_NAME}:<< parameters.IMAGE_TAG >> ${AWS_ACCOUNT_ID}.dkr.ecr.<< parameters.AWS_DEFAULT_REGION >>.amazonaws.com/${IMAGE_REPO_NAME}:<< parameters.IMAGE_TAG >>
-      - restore_cache:
-          key: v1-{{ checksum "requirements.txt" }}
-      - run:
-          name: Install awscli
-          command: |
-            python3 -m venv venv
-            . venv/bin/activate
-            pip3 install --upgrade -r requirements.txt
-      - save_cache:
-          key: v1-{{ checksum "requirements.txt" }}
-          paths:
-            - venv
-      - run:
-          name: Push image
-          command: |
-            . venv/bin/activate
-            eval $(aws ecr get-login --region << parameters.AWS_DEFAULT_REGION >> --no-include-email)
-            docker push ${AWS_ACCOUNT_ID}.dkr.ecr.<< parameters.AWS_DEFAULT_REGION >>.amazonaws.com/${IMAGE_REPO_NAME}:<< parameters.IMAGE_TAG >>
-    
+    - checkout
+    -run: |
+        docker build -t clairtest .
+        
+    - clair_scanner/scan:
+        image: clairtest
+
 workflows:
-    tests:
-      jobs:
-        - build_n_push:
-            IMAGE_TAG: sandbox
-            AWS_DEFAULT_REGION: us-west-2
-  
+  test:
+    jobs:
+      - scan_images
