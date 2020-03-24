@@ -1,7 +1,7 @@
 version: 2.1
 
 orbs:
-  clair: ovotech/clair-scanner@1.6.0
+  clair: ovotech/clair-scanner@1
 
 jobs:
   scan_ecr:
