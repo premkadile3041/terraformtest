@@ -10,7 +10,7 @@ jobs:
     steps:
     - run: $(aws ecr get-login --region us-west-2 --no-include-email)
     - clair/scan:
-        image: 848446468820.dkr.ecr.us-west-2.amazonaws.com/clairtest:latest
+        image: 848446468820.dkr.ecr.us-west-2.amazonaws.com/clairci:alpine
 workflows:
   test:
     jobs:
